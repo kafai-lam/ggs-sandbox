@@ -1,0 +1,22 @@
+services:
+  ggs-database:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ggs-database-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_USER}'",
+        ]
+      interval: 10s
+      timeout: 3s
+
+volumes:
+  ggs-database-data:
